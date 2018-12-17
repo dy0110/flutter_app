@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
 
+// StatelessWidgetクラス
 class MyApp extends StatelessWidget {
   final title = 'Flutter サンプル';
   
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// ウィジェットクラス
+// StatefulWidgetクラス
 class MyHomePage extends StatefulWidget {
   final String title;
 
@@ -32,8 +33,33 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
+// Dataクラスを定義して複雑な値を扱う
+class Data {
+  // ローカル変数を定義
+  int _price;
+  String _name;
+
+  // コンストラクタを定義
+  Data(this._name, this._price):super();
+
+  // メソッドを定義
+  // toStringメソッドをオーバーライドして文字列とするメソッドを定義
+  @override
+  String toString(){
+    return _name + ':' + _price.toString() + '円';
+  }
+}
+
+// Stateクラスを定義
 class _MyHomePageState extends State<MyHomePage>{
-  String _message;
+  // サンプルデータを定義(Dataインスタンスをリスト化)
+  static final _data = [
+    Data('りんご', 200),
+    Data('オレンジ', 150),
+    Data('もも', 300)
+  ];
+  // 選択されたDataを保管するプロパティ
+  Data _item;
 
   //メソッドを定義
   // Stateクラスのプロパティの初期化(initStateメソッド)
@@ -41,14 +67,14 @@ class _MyHomePageState extends State<MyHomePage>{
   @override
   void initState(){
     super.initState();
-    _message = 'ハロー！';
+    _item = _data[0]; // 最初の値をセット
   }
 
   // Stateの更新メソッド(setStateメソッド)
   // ステートの更新をステートクラスに知らせる働き
-  void _setMessage(){
+  void _setData(){
     setState(() {
-          _message = 'タップしました！';
+          _item = (_data..shuffle()).first;
         });
   }
 
@@ -65,13 +91,13 @@ class _MyHomePageState extends State<MyHomePage>{
       ),
       // ボディ部分
       body: Text(
-        _message,
+        _item.toString(),
         style: TextStyle( fontSize: 32.0 ),
         ),
       // フローティングアクションボタンを定義
       floatingActionButton: FloatingActionButton(
-        onPressed: _setMessage, // ボタンをタップした時のイベントを定義
-        tooltip: 'メッセージをセット', // ツールチップ
+        onPressed: _setData, // ボタンをタップした時のイベントを定義(参照渡し)
+        tooltip: 'くだものと値段', // ツールチップ
         child: Icon(Icons.star), // フロートボタンの子ウィジェット(アイコン)
       ),
     );
