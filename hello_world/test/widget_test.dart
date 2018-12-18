@@ -11,20 +11,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hello_world/main.dart';
 
 void main() {
+  // async 非同期メソッドを定義
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+    // await処理が完了するまで待機する
+    // ウィジェットを動かす
+    await tester.pumpWidget( new MyApp() ); // MyAppのインスタンスを作りUIの生成テスト
+    await tester.pump();  // フレームにトリガーを送り、ウィジェットを描画する
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // 第1引き数が第２引数と同じものかどうかチェック
+    expect(find.byIcon(Icons.star), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
   });
 }
